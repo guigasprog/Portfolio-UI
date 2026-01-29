@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  background-color: #0a0a0a;
+  color: white;
+  font-family: 'Fira Code', monospace;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+html {
+  /* SCROLL SUPER SUAVE */
+  scroll-behavior: smooth;
+}
+
+/* Suaviza ainda mais o scroll no container */
+main {
+  scroll-behavior: smooth;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.cursor-inverted {
+  width: 2rem;
+  height: 2rem;
+  background-color: white;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
+}
+
+.perspective-container {
+  perspective: 1200px;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .cursor-inverted {
+    display: none !important; /* Esconde o cursor no celular */
+  }
+  
+  body {
+    cursor: auto; /* Volta o cursor nativo (embora invisível no touch) */
+  }
+}

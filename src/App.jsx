@@ -49,18 +49,17 @@ function App() {
           </p>
         </section>
 
-        {/* Lista de Projetos com Âncora Estática */}
         <div className="relative w-full">
           {PROJECTS.map((project, index) => (
-            <div key={project.title} className="relative">
+            <div 
+              key={project.title} 
+              /* AQUI: O ref agora está no container do próprio card */
+              ref={projectRefs.current[index]}
+              /* Adicionei 'flex justify-center' para garantir que o card não fique colado na direita */
+              className="relative w-full flex justify-center" 
+            >
               
-              {/* ÂNCORA DE NAVEGAÇÃO (Ajuste Matemático)
-                  O container tem 200vh. O "centro" da animação é em 100vh.
-                  Posicionamos a âncora em 100vh absolutos. */}
-              <div 
-                ref={projectRefs.current[index]} 
-                className="absolute left-0 w-full h-px pointer-events-none top-[100vh]" 
-              />
+              {/* O div antigo com absolute/top-[100vh] foi removido */}
               
               <ProjectCard 
                 project={project} 
@@ -69,7 +68,8 @@ function App() {
               />
             </div>
           ))}
-          {/* Espaço final para o último card sair suavemente */}
+          
+          {/* Espaço final mantido */}
           <div className="h-[100vh] w-full pointer-events-none" />
         </div>
 

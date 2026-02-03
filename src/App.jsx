@@ -1,42 +1,60 @@
 import React, { Suspense, useState, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { AnimatePresence } from 'framer-motion'
 import CodeOrb from './components/3d/CodeOrb'
 import ProjectCard from './components/ui/ProjectCard'
-import { PROJECTS } from './constants/projects'
-import CustomCursor from './components/ui/CustomCursor'
-import Footer from './components/ui/Footer' // <--- Importe aqui
-import { AnimatePresence } from 'framer-motion'
 import ProjectDetails from './components/ui/ProjectDetails'
-import ScrollNavigation from './components/ui/ScrollNavigation'
+import Footer from './components/ui/Footer'
+import CustomCursor from './components/ui/CustomCursor'
+import ScrollNavigation from './components/ui/ScrollNavigation' 
+import { PROJECTS } from './constants/projects'
 
 function App() {
   const [selectedProject, setSelectedProject] = useState(null)
   
-  // Criamos refs para as seções principais
+  // Refs para navegação
   const heroRef = useRef(null)
   const footerRef = useRef(null)
-  // Criamos um array de refs para os projetos
   const projectRefs = useRef(PROJECTS.map(() => React.createRef()))
 
   return (
-    <main className="bg-black w-full min-h-screen relative">
+    <main className="bg-black w-full min-h-screen relative overflow-x-hidden">
       <CustomCursor />
       
-      {/* Passamos as referências para o componente de navegação */}
+      {/* Navegação Centralizada */}
       <ScrollNavigation 
         heroRef={heroRef} 
         projectRefs={projectRefs} 
         footerRef={footerRef} 
       />
       
+      {/* Background Fixo - Orb */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Canvas camera={{ position: [0, 0, 20], fov: 45 }}>
+          <Suspense fallback={null}>
+            <CodeOrb />
+          </Suspense>
+        </Canvas>
+      </div>
+
       <div className="relative z-10">
-        <section ref={heroRef} className="h-screen ..."> {/* Adicione ref aqui */}
-          {/* Conteúdo Hero */}
+        {/* Hero Section - GARANTA O REF AQUI */}
+        <section 
+          ref={heroRef} 
+          className="h-screen flex flex-col items-center justify-center p-6 text-center"
+        >
+          <h1 className="text-5xl md:text-[7rem] font-black leading-[0.8] tracking-tighter uppercase mb-6 italic mix-blend-overlay text-white">
+            Guilherme <br /> Delgado Martins
+          </h1>
+          <p className="text-white/55 font-mono tracking-[0.5em] uppercase text-xs md:text-sm">
+            Tech Lead • Fullstack • UI/UX
+          </p>
         </section>
 
+        {/* Lista de Projetos */}
         <div className="relative w-full">
           {PROJECTS.map((project, index) => (
-            <div key={project.title} ref={projectRefs.current[index]}> {/* Wrapper com Ref */}
+            <div key={project.title} ref={projectRefs.current[index]}>
               <ProjectCard 
                 project={project} 
                 index={index} 
@@ -47,17 +65,16 @@ function App() {
           <div className="h-[50vh] md:h-[80vh] w-full pointer-events-none" />
         </div>
 
-        <div ref={footerRef}> {/* Ref no Footer */}
+        <div ref={footerRef}>
           <Footer />
         </div>
-        
       </div>
+
       <AnimatePresence>
         {selectedProject && (
           <ProjectDetails 
             project={selectedProject.data} 
             id={selectedProject.index}
-            // Passamos a função para fechar (limpar o estado)
             onClose={() => setSelectedProject(null)} 
           />
         )}

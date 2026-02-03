@@ -20,20 +20,11 @@ export default function ProjectCard({ project, index, onSelect }) {
     // 1. ADICIONADO: pointer-events-none
     // Isso faz com que o container "invisível" que cobre a tela não bloqueie cliques nos outros cards
     <div ref={containerRef} className="h-[200vh] relative w-full mb-[-50vh] md:mb-[-100vh] pointer-events-none">
-      
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ perspective: "1500px" }}>
         
         <motion.div 
-          style={{ 
-            x, 
-            rotateY, 
-            z, 
-            scale, 
-            opacity, 
-            transformStyle: "preserve-3d" 
-          }}
-          // 2. ADICIONADO: pointer-events-auto
-          // Isso reativa o clique APENAS no cartão visível
+          ref={innerRef} 
+          style={{ x, rotateY, z, scale, opacity, transformStyle: "preserve-3d" }}
           className="relative group cursor-pointer pointer-events-auto"
           onClick={() => onSelect && onSelect(project)}
         >

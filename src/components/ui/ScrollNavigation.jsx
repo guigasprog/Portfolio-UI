@@ -25,15 +25,15 @@ export default function ScrollNavigation({ heroRef, projectRefs, footerRef }) {
 
   return (
     <>
-      {/* SETA TOPO - VOLTAR */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
+      {/* SETA TOPO - VOLTAR (MAIOR) */}
+      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
         <AnimatePresence>
           {currentIndex !== -1 && (
             <motion.button
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="group flex flex-col items-center gap-1 pointer-events-auto cursor-pointer"
+              exit={{ opacity: 0, y: -30 }}
+              className="group flex flex-col items-center gap-3 pointer-events-auto cursor-pointer"
               onClick={() => {
                 if (currentIndex === 0) handleScroll(heroRef)
                 else if (currentIndex === 99) handleScroll(projectRefs.current[PROJECTS.length - 1])
@@ -41,13 +41,15 @@ export default function ScrollNavigation({ heroRef, projectRefs, footerRef }) {
               }}
             >
               <motion.div 
-                animate={{ y: [0, -4, 0] }} 
-                transition={{ repeat: Infinity, duration: 2 }}
-                className="p-1.5 border border-white/10 bg-black/50 backdrop-blur-md rounded-full group-hover:border-white/40 transition-colors"
+                animate={{ y: [0, -6, 0] }} 
+                transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                // Aumento de padding (p-3) e tamanho do border
+                className="p-3 md:p-4 border border-white/20 bg-black/60 backdrop-blur-xl rounded-full group-hover:bg-white group-hover:border-white transition-all duration-500 shadow-[0_0_20px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
               >
-                <ChevronUp className="w-4 h-4 text-white" />
+                {/* Ícone maior (w-6 h-6) */}
+                <ChevronUp className="w-6 h-6 md:w-8 md:h-8 text-white group-hover:text-black transition-colors" />
               </motion.div>
-              <span className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/40 group-hover:text-white transition-all">
+              <span className="text-[10px] md:text-xs font-mono uppercase tracking-[0.4em] text-white/40 group-hover:text-white group-hover:tracking-[0.6em] transition-all duration-500">
                 {currentIndex === 99 ? PROJECTS[PROJECTS.length-1].title : (currentIndex === 0 ? "Início" : PROJECTS[currentIndex-1]?.title)}
               </span>
             </motion.button>
@@ -55,30 +57,32 @@ export default function ScrollNavigation({ heroRef, projectRefs, footerRef }) {
         </AnimatePresence>
       </div>
 
-      {/* SETA BASE - AVANÇAR */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
+      {/* SETA BASE - AVANÇAR (MAIOR) */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
         <AnimatePresence>
           {currentIndex !== 99 && (
             <motion.button
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="group flex flex-col items-center gap-1 pointer-events-auto cursor-pointer"
+              exit={{ opacity: 0, y: 30 }}
+              className="group flex flex-col items-center gap-3 pointer-events-auto cursor-pointer"
               onClick={() => {
                 if (currentIndex === -1) handleScroll(projectRefs.current[0])
                 else if (currentIndex === PROJECTS.length - 1) handleScroll(footerRef)
                 else handleScroll(projectRefs.current[currentIndex + 1])
               }}
             >
-              <span className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/40 group-hover:text-white transition-all">
+              <span className="text-[10px] md:text-xs font-mono uppercase tracking-[0.4em] text-white/40 group-hover:text-white group-hover:tracking-[0.6em] transition-all duration-500">
                 {currentIndex === -1 ? PROJECTS[0].title : (currentIndex === PROJECTS.length - 1 ? "Contato" : PROJECTS[currentIndex + 1].title)}
               </span>
               <motion.div 
-                animate={{ y: [0, 4, 0] }} 
-                transition={{ repeat: Infinity, duration: 2 }}
-                className="p-1.5 border border-white/10 bg-black/50 backdrop-blur-md rounded-full group-hover:border-white/40 transition-colors"
+                animate={{ y: [0, 6, 0] }} 
+                transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                // Aumento de padding e brilho no hover
+                className="p-3 md:p-4 border border-white/20 bg-black/60 backdrop-blur-xl rounded-full group-hover:bg-white group-hover:border-white transition-all duration-500 shadow-[0_0_20px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
               >
-                <ChevronDown className="w-4 h-4 text-white" />
+                {/* Ícone maior (w-6 h-6) */}
+                <ChevronDown className="w-6 h-6 md:w-8 md:h-8 text-white group-hover:text-black transition-colors" />
               </motion.div>
             </motion.button>
           )}

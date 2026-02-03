@@ -54,13 +54,13 @@ function App() {
         {/* Lista de Projetos */}
         <div className="relative w-full">
           {PROJECTS.map((project, index) => (
-            <div key={project.title} ref={projectRefs.current[index]}>
-              <ProjectCard 
-                project={project} 
-                index={index} 
-                onSelect={() => setSelectedProject({ data: project, index })}
-              />
-            </div>
+            <ProjectCard 
+              key={project.title} 
+              project={project} 
+              index={index} 
+              innerRef={projectRefs.current[index]} 
+              onSelect={() => setSelectedProject({ data: project, index })}
+            />
           ))}
           <div className="h-[50vh] md:h-[80vh] w-full pointer-events-none" />
         </div>

@@ -1,34 +1,34 @@
 import React, { Suspense, useState, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { AnimatePresence } from 'framer-motion'
 import CodeOrb from './components/3d/CodeOrb'
 import ProjectCard from './components/ui/ProjectCard'
-import { PROJECTS } from './constants/projects'
-import CustomCursor from './components/ui/CustomCursor'
-import Footer from './components/ui/Footer'
-import { AnimatePresence } from 'framer-motion'
 import ProjectDetails from './components/ui/ProjectDetails'
-import ScrollNavigation from './components/ui/ScrollNavigation'
+import Footer from './components/ui/Footer'
+import CustomCursor from './components/ui/CustomCursor'
+import ScrollNavigation from './components/ui/ScrollNavigation' 
+import { PROJECTS } from './constants/projects'
 
 function App() {
   const [selectedProject, setSelectedProject] = useState(null)
   
-  // Refs
+  // Refs para navegação
   const heroRef = useRef(null)
   const footerRef = useRef(null)
   const projectRefs = useRef(PROJECTS.map(() => React.createRef()))
 
   return (
-    <main className="bg-black w-full min-h-screen relative">
+    <main className="bg-black w-full min-h-screen relative overflow-x-hidden">
       <CustomCursor />
       
-      {/* CORREÇÃO 1: Navegação Centralizada */}
+      {/* Navegação Centralizada */}
       <ScrollNavigation 
         heroRef={heroRef} 
         projectRefs={projectRefs} 
         footerRef={footerRef} 
       />
       
-      {/* CORREÇÃO 2: O Background com o Orb estava faltando aqui */}
+      {/* Background Fixo - Orb */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Canvas camera={{ position: [0, 0, 20], fov: 45 }}>
           <Suspense fallback={null}>
@@ -38,9 +38,11 @@ function App() {
       </div>
 
       <div className="relative z-10">
-        
-        {/* CORREÇÃO 3: O texto do Hero estava vazio */}
-        <section ref={heroRef} className="h-screen flex flex-col items-center justify-center p-6 text-center snap-center">
+        {/* Hero Section - GARANTA O REF AQUI */}
+        <section 
+          ref={heroRef} 
+          className="h-screen flex flex-col items-center justify-center p-6 text-center"
+        >
           <h1 className="text-5xl md:text-[7rem] font-black leading-[0.8] tracking-tighter uppercase mb-6 italic mix-blend-overlay text-white">
             Guilherme <br /> Delgado Martins
           </h1>
@@ -49,41 +51,23 @@ function App() {
           </p>
         </section>
 
-        <div className="relative w-full flex flex-col gap-20"> {/* Adicionei gap para espaçamento vertical */}
-          {PROJECTS.map((project, index) => {
-            // Lógica para alternar: Pares na Esquerda, Ímpares na Direita
-            const isLeft = index % 2 === 0; 
-
-            return (
-              <div 
-                key={project.title} 
-                // Se for Left usa justify-start, se for Right usa justify-end
-                // Adicionei px-10 ou px-20 para não grudar na borda literal da tela
-                className={`relative w-full flex ${isLeft ? 'justify-start' : 'justify-end'} px-12 py-10`}
-              >
-                
-                {/* REFERÊNCIA NO CONTAINER DO CARD */}
-                {/* O ref fica aqui para o ScrollTrigger pegar o wrapper inteiro */}
-                <div ref={projectRefs.current[index]} className="relative">
-                  <ProjectCard 
-                    project={project} 
-                    index={index} 
-                    onSelect={() => setSelectedProject({ data: project, index })}
-                  />
-                </div>
-
-              </div>
-            );
-          })}
-          
-          {/* Espaço final */}
-          <div className="h-[50vh] w-full pointer-events-none" />
+        {/* Lista de Projetos */}
+        <div className="relative w-full">
+          {PROJECTS.map((project, index) => (
+            <div key={project.title} ref={projectRefs.current[index]}>
+              <ProjectCard 
+                project={project} 
+                index={index} 
+                onSelect={() => setSelectedProject({ data: project, index })}
+              />
+            </div>
+          ))}
+          <div className="h-[50vh] md:h-[80vh] w-full pointer-events-none" />
         </div>
 
         <div ref={footerRef}>
           <Footer />
         </div>
-        
       </div>
 
       <AnimatePresence>

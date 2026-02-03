@@ -45,6 +45,8 @@ function App() {
               onSelect={() => setSelectedProject({ data: project, index })}
             />
           ))}
+          
+          <div className="h-[50vh] md:h-[80vh] w-full pointer-events-none" />
         </div>
 
         <Footer />

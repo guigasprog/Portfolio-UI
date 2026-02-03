@@ -52,7 +52,7 @@ export default function ScrollNavigation({ heroRef, projectRefs, footerRef }) {
               else handleScroll(projectRefs.current[currentIndex - 1])
             }}
           >
-            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/20 group-hover:text-white transition-colors duration-300">
+            <span className="text-[0.8rem] font-mono uppercase tracking-[0.2em] text-white/20 group-hover:text-white transition-colors duration-300">
               {getPrevLabel()}
             </span>
             <motion.div 
@@ -87,7 +87,7 @@ export default function ScrollNavigation({ heroRef, projectRefs, footerRef }) {
             >
               <ChevronDown className="w-4 h-4 text-white" />
             </motion.div>
-            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/20 group-hover:text-white transition-colors duration-300">
+            <span className="text-[0.8rem] font-mono uppercase tracking-[0.2em] text-white/20 group-hover:text-white transition-colors duration-300">
               {getNextLabel()}
             </span>
           </motion.button>

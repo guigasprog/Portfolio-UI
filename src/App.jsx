@@ -10,46 +10,45 @@ import ProjectDetails from './components/ui/ProjectDetails'
 
 function App() {
   const [selectedProject, setSelectedProject] = useState(null)
+  
+  // Criamos refs para as seções principais
+  const heroRef = useRef(null)
+  const footerRef = useRef(null)
+  // Criamos um array de refs para os projetos
+  const projectRefs = useRef(PROJECTS.map(() => React.createRef()))
+
   return (
     <main className="bg-black w-full min-h-screen relative">
       <CustomCursor />
       
-      {/* Background Fixo */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <Canvas camera={{ position: [0, 0, 20], fov: 45 }}>
-          <Suspense fallback={null}>
-            <CodeOrb />
-          </Suspense>
-        </Canvas>
-      </div>
-
+      {/* Passamos as referências para o componente de navegação */}
+      <ScrollNavigation 
+        heroRef={heroRef} 
+        projectRefs={projectRefs} 
+        footerRef={footerRef} 
+      />
+      
       <div className="relative z-10">
-        
-        {/* Hero Section */}
-        <section className="h-screen flex flex-col items-center justify-center p-6 text-center snap-center">
-          <h1 className="text-5xl md:text-[7rem] font-black leading-[0.8] tracking-tighter uppercase mb-6 italic mix-blend-overlay text-white">
-            Guilherme <br /> Delgado Martins
-          </h1>
-          <p className="text-white/55 font-mono tracking-[0.5em] uppercase text-xs md:text-sm">
-            Tech Lead • Fullstack • UI/UX
-          </p>
+        <section ref={heroRef} className="h-screen ..."> {/* Adicione ref aqui */}
+          {/* Conteúdo Hero */}
         </section>
 
-        {/* Lista de Projetos */}
         <div className="relative w-full">
           {PROJECTS.map((project, index) => (
-            <ProjectCard 
-              key={project.title} 
-              project={project} 
-              index={index} 
-              onSelect={() => setSelectedProject({ data: project, index })}
-            />
+            <div key={project.title} ref={projectRefs.current[index]}> {/* Wrapper com Ref */}
+              <ProjectCard 
+                project={project} 
+                index={index} 
+                onSelect={() => setSelectedProject({ data: project, index })}
+              />
+            </div>
           ))}
-          
           <div className="h-[50vh] md:h-[80vh] w-full pointer-events-none" />
         </div>
 
-        <Footer />
+        <div ref={footerRef}> {/* Ref no Footer */}
+          <Footer />
+        </div>
         
       </div>
       <AnimatePresence>

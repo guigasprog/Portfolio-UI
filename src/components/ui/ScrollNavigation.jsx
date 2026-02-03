@@ -20,7 +20,7 @@ export default function ScrollNavigation({ heroRef, projectRefs, footerRef }) {
 
   const handleScroll = (ref) => {
     if (ref?.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   }
 

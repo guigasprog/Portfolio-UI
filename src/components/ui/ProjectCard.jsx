@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ImageOff } from 'lucide-react'
 
-export default function ProjectCard({ project, index, onSelect }) {
+export default function ProjectCard({ project, index, onSelect, innerRef }) {
   const containerRef = useRef(null)
   
   const { scrollYProgress } = useScroll({

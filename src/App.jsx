@@ -53,11 +53,13 @@ function App() {
         <div className="relative w-full">
           {PROJECTS.map((project, index) => (
             <div key={project.title} className="relative">
-              {/* Âncora invisível para o scroll parar no lugar certo */}
+              
+              {/* ÂNCORA DE NAVEGAÇÃO (Ajuste Matemático)
+                  O container tem 200vh. O "centro" da animação é em 100vh.
+                  Posicionamos a âncora em 100vh absolutos. */}
               <div 
                 ref={projectRefs.current[index]} 
-                className="absolute top-1/2 left-0 w-full h-px pointer-events-none" 
-                style={{ transform: 'translateY(50vh)' }} 
+                className="absolute left-0 w-full h-px pointer-events-none top-[100vh]" 
               />
               
               <ProjectCard 
@@ -67,7 +69,8 @@ function App() {
               />
             </div>
           ))}
-          <div className="h-[50vh] md:h-[80vh] w-full pointer-events-none" />
+          {/* Espaço final para o último card sair suavemente */}
+          <div className="h-[100vh] w-full pointer-events-none" />
         </div>
 
         <div ref={footerRef}>

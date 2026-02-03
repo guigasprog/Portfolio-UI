@@ -53,24 +53,22 @@ function App() {
           {PROJECTS.map((project, index) => (
             <div 
               key={project.title} 
-              /* AQUI: O ref agora está no container do próprio card */
-              ref={projectRefs.current[index]}
-              /* Adicionei 'flex justify-center' para garantir que o card não fique colado na direita */
-              className="relative w-full flex justify-center" 
+              className="relative w-full flex justify-center items-center min-h-screen"
             >
               
-              {/* O div antigo com absolute/top-[100vh] foi removido */}
-              
-              <ProjectCard 
-                project={project} 
-                index={index} 
-                onSelect={() => setSelectedProject({ data: project, index })}
-              />
+              <div ref={projectRefs.current[index]} className="relative">
+                <ProjectCard 
+                  project={project} 
+                  index={index} 
+                  onSelect={() => setSelectedProject({ data: project, index })}
+                />
+              </div>
+
             </div>
           ))}
-          
-          {/* Espaço final mantido */}
-          <div className="h-[100vh] w-full pointer-events-none" />
+
+          {/* Mantendo o espaço final para scroll suave */}
+          <div className="h-[50vh] w-full pointer-events-none" />
         </div>
 
         <div ref={footerRef}>

@@ -49,25 +49,34 @@ function App() {
           </p>
         </section>
 
-        <div className="relative w-full">
-          {PROJECTS.map((project, index) => (
-            <div 
-              key={project.title} 
-              className="relative w-full flex justify-center items-center min-h-screen"
-            >
-              
-              <div ref={projectRefs.current[index]} className="relative">
-                <ProjectCard 
-                  project={project} 
-                  index={index} 
-                  onSelect={() => setSelectedProject({ data: project, index })}
-                />
+        <div className="relative w-full flex flex-col gap-20"> {/* Adicionei gap para espaçamento vertical */}
+          {PROJECTS.map((project, index) => {
+            // Lógica para alternar: Pares na Esquerda, Ímpares na Direita
+            const isLeft = index % 2 === 0; 
+
+            return (
+              <div 
+                key={project.title} 
+                // Se for Left usa justify-start, se for Right usa justify-end
+                // Adicionei px-10 ou px-20 para não grudar na borda literal da tela
+                className={`relative w-full flex ${isLeft ? 'justify-start' : 'justify-end'} px-12 py-10`}
+              >
+                
+                {/* REFERÊNCIA NO CONTAINER DO CARD */}
+                {/* O ref fica aqui para o ScrollTrigger pegar o wrapper inteiro */}
+                <div ref={projectRefs.current[index]} className="relative">
+                  <ProjectCard 
+                    project={project} 
+                    index={index} 
+                    onSelect={() => setSelectedProject({ data: project, index })}
+                  />
+                </div>
+
               </div>
-
-            </div>
-          ))}
-
-          {/* Mantendo o espaço final para scroll suave */}
+            );
+          })}
+          
+          {/* Espaço final */}
           <div className="h-[50vh] w-full pointer-events-none" />
         </div>
 

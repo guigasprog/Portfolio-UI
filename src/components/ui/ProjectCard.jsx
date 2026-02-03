@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ImageOff } from 'lucide-react'
 
-export default function ProjectCard({ project, index, onSelect, innerRef }) {
+export default function ProjectCard({ project, index, onSelect }) {
   const containerRef = useRef(null)
   
   const { scrollYProgress } = useScroll({
@@ -23,7 +23,6 @@ export default function ProjectCard({ project, index, onSelect, innerRef }) {
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ perspective: "1500px" }}>
         
         <motion.div 
-          ref={innerRef} 
           style={{ x, rotateY, z, scale, opacity, transformStyle: "preserve-3d" }}
           className="relative group cursor-pointer pointer-events-auto"
           onClick={() => onSelect && onSelect(project)}

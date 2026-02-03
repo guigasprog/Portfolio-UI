@@ -54,13 +54,20 @@ function App() {
         {/* Lista de Projetos */}
         <div className="relative w-full">
           {PROJECTS.map((project, index) => (
-            <ProjectCard 
-              key={project.title} 
-              project={project} 
-              index={index} 
-              innerRef={projectRefs.current[index]} 
-              onSelect={() => setSelectedProject({ data: project, index })}
-            />
+            <div key={project.title} className="relative">
+              {/* ÂNCORA INVISÍVEL: Fica no topo do container do projeto */}
+              <div 
+                ref={projectRefs.current[index]} 
+                className="absolute top-1/2 left-0 w-full h-px pointer-events-none" 
+                style={{ transform: 'translateY(50vh)' }} // Ajuste fino para o centro
+              />
+              
+              <ProjectCard 
+                project={project} 
+                index={index} 
+                onSelect={() => setSelectedProject({ data: project, index })}
+              />
+            </div>
           ))}
           <div className="h-[50vh] md:h-[80vh] w-full pointer-events-none" />
         </div>

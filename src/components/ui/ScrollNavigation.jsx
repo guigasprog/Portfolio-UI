@@ -19,7 +19,10 @@ export default function ScrollNavigation({ heroRef, projectRefs, footerRef }) {
 
   const handleScroll = (ref) => {
     if (ref?.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        ref.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' // Isso vai alinhar a âncora no centro exato da tela
+        })
     }
   }
 

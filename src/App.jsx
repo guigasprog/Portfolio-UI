@@ -30,7 +30,7 @@ function App() {
       />
 
       <div className="fixed inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 5] }}>
+        <Canvas camera={{ position: [0, 0, 20], fov: 45 }}>
           <Suspense fallback={null}>
             <CodeOrb />
           </Suspense>
@@ -45,17 +45,12 @@ function App() {
           {/* Container do texto com mix-blend para contraste com a esfera */}
           <div className="text-center pointer-events-none select-none mix-blend-difference space-y-6">
             
-            <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-white">
-              GUILHERME<br className="md:hidden" /> DELGADO<br className="md:hidden" /> MARTINS
+            <h1 className="text-5xl md:text-[7rem] font-black leading-[0.8] tracking-tighter uppercase mb-6 italic mix-blend-overlay text-white">
+              Guilherme <br /> Delgado Martins
             </h1>
-            
-            <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 text-sm md:text-lg text-gray-300 font-light tracking-[0.2em] uppercase">
-              <span>Fullstack Developer</span>
-              <span className="hidden md:inline text-gray-600">•</span>
-              <span>Tech Lead</span>
-              <span className="hidden md:inline text-gray-600">•</span>
-              <span>UI/UX Designer</span>
-            </div>
+            <p className="text-white/55 font-mono tracking-[0.5em] uppercase text-xs md:text-sm">
+              Tech Lead • Fullstack • UI/UX
+            </p>
 
           </div>
           

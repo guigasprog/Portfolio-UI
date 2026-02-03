@@ -4,7 +4,7 @@
 export const PROJECTS = [
   {
     title: "Nexus CRM & Mensageria",
-    image: "/src/assets/crm.png", // Substitua pela imagem real na pasta public/images
+    image: "../assets/crm.png", // Substitua pela imagem real na pasta public/images
     year: "2025",
     role: "Fullstack Architect",
     tags: ["Node.js", "Socket.io", "React"],
@@ -17,7 +17,7 @@ export const PROJECTS = [
   },
   {
     title: "EmagreçaJá Mobile",
-    image: "/src/assets/emagrecaja.png", // Substitua
+    image: "../assets/emagrecaja.png", // Substitua
     year: "2026",
     role: "Mobile Lead",
     tags: ["React Native", "Firebase", "Data Visualization", "React", "Node.Js"],
@@ -43,7 +43,7 @@ export const PROJECTS = [
   },
   {
     title: "QuestTerm RPG",
-    image: "/src/assets/questterm.png", // Substitua
+    image: "../assets/questterm.png", // Substitua
     year: "2025",
     role: "Game Dev",
     tags: ["React", "Game Design", "Algorithms"],

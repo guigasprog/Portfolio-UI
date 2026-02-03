@@ -7,6 +7,7 @@ import CustomCursor from './components/ui/CustomCursor'
 import Footer from './components/ui/Footer' // <--- Importe aqui
 import { AnimatePresence } from 'framer-motion'
 import ProjectDetails from './components/ui/ProjectDetails'
+import ScrollNavigation from './components/ui/ScrollNavigation'
 
 function App() {
   const [selectedProject, setSelectedProject] = useState(null)

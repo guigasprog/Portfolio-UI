@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useState, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import CodeOrb from './components/3d/CodeOrb'
 import ProjectCard from './components/ui/ProjectCard'

@@ -1,14 +1,32 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { X, Github, ExternalLink, Calendar, Code2, User, ImageOff } from 'lucide-react' // Importe ImageOff
 
 export default function ProjectDetails({ project, id, onClose }) {
-  
+  const dialogRef = useRef(null)
+
   // Bloqueia o scroll da página
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    return () => document.body.style.overflow = 'auto'
+    return () => { document.body.style.overflow = '' }
   }, [])
+
+  // Escape fecha o modal, e o foco volta pro card que o abriu — sem isso quem
+  // navega por teclado fica preso atrás do overlay.
+  useEffect(() => {
+    const anterior = document.activeElement
+    dialogRef.current?.focus()
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      if (anterior instanceof HTMLElement) anterior.focus()
+    }
+  }, [onClose])
 
   if (!project) return null;
 
@@ -25,14 +43,20 @@ export default function ProjectDetails({ project, id, onClose }) {
       />
 
       {/* Modal */}
-      <motion.div 
+      <motion.div
         layoutId={`card-container-${id}`}
-        className="relative w-full max-w-5xl max-h-[90vh] bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden flex flex-col shadow-2xl z-10"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Detalhes do projeto ${project.title}`}
+        tabIndex={-1}
+        className="relative w-full max-w-5xl max-h-[90vh] bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden flex flex-col shadow-2xl z-10 focus:outline-none"
       >
-        
+
         {/* Botão Fechar */}
-        <button 
-          onClick={onClose} 
+        <button
+          onClick={onClose}
+          aria-label="Fechar detalhes do projeto"
           className="absolute top-4 right-4 z-20 p-2 bg-black/50 backdrop-blur-md rounded-full text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer"
         >
           <X className="w-6 h-6" />

@@ -2,7 +2,9 @@ export const PROJECTS = [
   {
     title: "Nexus CRM & Mensageria",
     // CORREÇÃO: Remova o ../../assets/ e use o caminho da pasta public
-    image: "/images/crm.png", 
+    image: "/images/crm.webp",
+    imageWidth: 1296,
+    imageHeight: 641,
     year: "2025",
     role: "Fullstack Architect",
     tags: ["Node.js", "Socket.io", "React"],
@@ -16,7 +18,9 @@ export const PROJECTS = [
   {
     title: "EmagreçaJá Mobile",
     // CORREÇÃO: Caminho direto da public
-    image: "/images/emagrecaja.png", 
+    image: "/images/emagrecaja.webp",
+    imageWidth: 1299,
+    imageHeight: 643,
     year: "2026",
     role: "Mobile Lead",
     tags: ["React Native", "Firebase", "Data Visualization", "React", "Node.Js"],
@@ -43,7 +47,10 @@ export const PROJECTS = [
   {
     title: "QuestTerm RPG",
     // CORREÇÃO: Caminho direto da public
-    image: "/images/questterm.png", 
+    // PNG de propósito: esse print tem cores chapadas e ficou 46% MAIOR em WebP.
+    image: "/images/questterm.png",
+    imageWidth: 635,
+    imageHeight: 180,
     year: "2025",
     role: "Game Dev",
     tags: ["React", "Game Design", "Algorithms"],

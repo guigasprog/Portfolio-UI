@@ -22,19 +22,28 @@ export default function ProjectCard({ project, index, onSelect }) {
     <div ref={containerRef} className="h-[200vh] relative w-full mb-[-50vh] md:mb-[-100vh] pointer-events-none">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ perspective: "1500px" }}>
         
-        <motion.div 
+        <motion.button
+          type="button"
           style={{ x, rotateY, z, scale, opacity, transformStyle: "preserve-3d" }}
-          className="relative group cursor-pointer pointer-events-auto"
+          className="relative group cursor-pointer pointer-events-auto text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           onClick={() => onSelect && onSelect(project)}
+          // Os cards vivem em containers de 200vh sobrepostos: sem isso, o foco
+          // por teclado pode cair num card que está invisível na tela.
+          onFocus={() => containerRef.current?.scrollIntoView({ block: 'center' })}
+          aria-label={`Ver detalhes do projeto ${project.title}`}
         >
           
           <div className="relative w-[330px] h-[280px] md:w-[650px] md:h-[360px] overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl flex items-center justify-center">
             
             {project.image ? (
-              <motion.img 
+              <motion.img
                 layoutId={`card-image-${index}`}
-                src={project.image} 
+                src={project.image}
                 alt={project.title}
+                width={project.imageWidth}
+                height={project.imageHeight}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover grayscale-0 md:grayscale transition-all duration-700 md:group-hover:grayscale-0"
               />
             ) : (
@@ -55,7 +64,7 @@ export default function ProjectCard({ project, index, onSelect }) {
               </h2>
             </div>
           </div>
-        </motion.div>
+        </motion.button>
       </div>
     </div>
   )

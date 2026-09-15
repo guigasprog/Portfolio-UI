@@ -1,19 +1,31 @@
-import React, { Suspense, useState, useRef } from 'react'
-import { Canvas } from '@react-three/fiber'
-import CodeOrb from './components/3d/CodeOrb'
+import React, { Suspense, lazy, useState, useRef } from 'react'
 import ProjectCard from './components/ui/ProjectCard'
 import { PROJECTS } from './constants/projects'
 import CustomCursor from './components/ui/CustomCursor'
+import About from './components/ui/About'
 import Footer from './components/ui/Footer' // <--- Importe aqui
 import { AnimatePresence } from 'framer-motion'
-import ProjectDetails from './components/ui/ProjectDetails'
 import ScrollNavigation from './components/ui/ScrollNavigation'
+
+// Carregados sob demanda: o canvas 3D carrega o three.js inteiro, e o modal de
+// detalhes só existe depois de um clique — nenhum dos dois precisa bloquear o
+// primeiro render.
+const OrbCanvas = lazy(() => import('./components/3d/OrbCanvas'))
+const ProjectDetails = lazy(() => import('./components/ui/ProjectDetails'))
+
+// Quem pediu menos movimento no sistema não deve receber uma esfera girando em
+// tela cheia — e assim também nem baixa o chunk do three.js.
+const prefereMenosMovimento = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 function App() {
   const [selectedProject, setSelectedProject] = useState(null)
+  const [mostrarOrb] = useState(() => !prefereMenosMovimento())
   
   // Criamos refs para as seções principais
   const heroRef = useRef(null)
+  const aboutRef = useRef(null)
   const footerRef = useRef(null)
   // Criamos um array de refs para os projetos
   const projectRefs = useRef(PROJECTS.map(() => React.createRef()))
@@ -23,18 +35,19 @@ function App() {
       <CustomCursor />
       
       {/* Passamos as referências para o componente de navegação */}
-      <ScrollNavigation 
-        heroRef={heroRef} 
-        projectRefs={projectRefs} 
-        footerRef={footerRef} 
+      <ScrollNavigation
+        heroRef={heroRef}
+        aboutRef={aboutRef}
+        projectRefs={projectRefs}
+        footerRef={footerRef}
       />
 
       <div className="fixed inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 20], fov: 45 }}>
+        {mostrarOrb && (
           <Suspense fallback={null}>
-            <CodeOrb />
+            <OrbCanvas />
           </Suspense>
-        </Canvas>
+        )}
       </div>
       
       <div className="relative z-10">
@@ -60,6 +73,10 @@ function App() {
           </div>
         </section>
 
+        <div ref={aboutRef}>
+          <About />
+        </div>
+
         <div className="relative w-full">
           {PROJECTS.map((project, index) => (
             <div key={project.title} ref={projectRefs.current[index]}> {/* Wrapper com Ref */}
@@ -78,16 +95,20 @@ function App() {
         </div>
         
       </div>
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectDetails 
-            project={selectedProject.data} 
-            id={selectedProject.index}
-            // Passamos a função para fechar (limpar o estado)
-            onClose={() => setSelectedProject(null)} 
-          />
-        )}
-      </AnimatePresence>
+      {/* Suspense fica FORA do AnimatePresence de propósito: o AnimatePresence
+          precisa enxergar o ProjectDetails como filho direto pra animar a saída. */}
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {selectedProject && (
+            <ProjectDetails
+              project={selectedProject.data}
+              id={selectedProject.index}
+              // Passamos a função para fechar (limpar o estado)
+              onClose={() => setSelectedProject(null)}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
     </main>
   )
 }

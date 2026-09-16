@@ -1,55 +1,81 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Text, Billboard } from '@react-three/drei'
-import * as THREE from 'three'
 
-export default function CodeOrb({ speed }) {
+// Constantes de módulo, e não do componente: declaradas dentro, o array de
+// palavras era recriado a cada render e o useMemo que depende dele passava a
+// pedir uma dependência que muda sempre — que é o mesmo que não memoizar nada.
+const COUNT = 150
+const RADIUS = 7
+const CODE_SNIPPETS = [
+  '{ }',
+  '</>',
+  '=>',
+  'static',
+  'void',
+  'async',
+  'React',
+  'Node',
+  'SQL',
+  'useEffect',
+  'Angular',
+  'Java',
+  'Native',
+  'Dataflex',
+  'PHP',
+  'Adianti',
+  'Spring-boot',
+]
+
+/**
+ * Ruído determinístico no lugar de Math.random().
+ *
+ * Sortear durante o render é função impura: o React pode renderizar duas vezes
+ * (StrictMode faz isso em desenvolvimento) e cada passada sortearia opacidades
+ * diferentes. Um gerador semeado pelo índice dá sempre o mesmo valor para a
+ * mesma partícula, e a esfera fica idêntica em toda montagem.
+ */
+function ruido(i) {
+  const x = Math.sin(i * 12.9898) * 43758.5453
+  return x - Math.floor(x)
+}
+
+export default function CodeOrb() {
   const meshRef = useRef()
-  const rotationY = useRef(0)
-  
-  const COUNT = 150
-  const RADIUS = 7
-  const CODE_SNIPPETS = ["{ }", "</>", "=>", "static", "void", "async", "React", "Node", "SQL", "useEffect", "Angular", "Java", "Native", "Dataflex", "PHP", "Adianti", "Spring-boot"]
 
   const particles = useMemo(() => {
     const temp = []
     for (let i = 0; i < COUNT; i++) {
+      // Espiral de Fibonacci: distribui os pontos pela esfera sem aglomerar
+      // nos polos, que é o que acontece sorteando latitude e longitude.
       const phi = Math.acos(-1 + (2 * i) / COUNT)
       const theta = Math.sqrt(COUNT * Math.PI) * phi
-      
-      const x = RADIUS * Math.cos(theta) * Math.sin(phi)
-      const y = RADIUS * Math.sin(theta) * Math.sin(phi)
-      const z = RADIUS * Math.cos(phi)
-      
+
       temp.push({
-        pos: [x, y, z],
+        pos: [
+          RADIUS * Math.cos(theta) * Math.sin(phi),
+          RADIUS * Math.sin(theta) * Math.sin(phi),
+          RADIUS * Math.cos(phi),
+        ],
         text: CODE_SNIPPETS[i % CODE_SNIPPETS.length],
-        fontSize: 0.22, // Um pouco maior para preencher melhor
-        opacity: 0.2 + Math.random() * 0.4
+        fontSize: 0.22,
+        opacity: 0.2 + ruido(i) * 0.4,
       })
     }
     return temp
   }, [])
 
   useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.1 * delta
-      meshRef.current.rotation.x += 0.05 * delta
-    }
+    if (!meshRef.current) return
+    meshRef.current.rotation.y += 0.1 * delta
+    meshRef.current.rotation.x += 0.05 * delta
   })
 
   return (
     <group ref={meshRef}>
       {particles.map((p, i) => (
-        /* O Billboard faz com que o que estiver dentro dele sempre aponte para a câmera */
-        <Billboard
-          key={i}
-          follow={true}
-          lockX={false}
-          lockY={false}
-          lockZ={false}
-          position={p.pos}
-        >
+        /* O Billboard mantém o texto sempre virado para a câmera. */
+        <Billboard key={i} follow position={p.pos}>
           <Text
             fontSize={p.fontSize}
             color="#ffffff"

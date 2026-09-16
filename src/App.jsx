@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useRef } from 'react'
+import { Suspense, lazy, useState, useRef } from 'react'
 import ProjectCard from './components/ui/ProjectCard'
 import { PROJECTS } from './constants/projects'
 import CustomCursor from './components/ui/CustomCursor'
@@ -23,12 +23,16 @@ function App() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [mostrarOrb] = useState(() => !prefereMenosMovimento())
   
-  // Criamos refs para as seções principais
   const heroRef = useRef(null)
   const aboutRef = useRef(null)
   const footerRef = useRef(null)
-  // Criamos um array de refs para os projetos
-  const projectRefs = useRef(PROJECTS.map(() => React.createRef()))
+
+  // Um array de ELEMENTOS preenchido por callback ref, e não um array de
+  // objetos de ref criados com createRef. Antes o JSX fazia
+  // `ref={projectRefs.current[index]}`, o que lê `.current` DURANTE o render —
+  // o React desencoraja, porque o valor lido ali não é reativo e pode estar
+  // desatualizado. Com callback, quem escreve é o React, depois do render.
+  const projectRefs = useRef([])
 
   return (
     <main className="bg-black w-full min-h-screen relative">
@@ -79,7 +83,12 @@ function App() {
 
         <div className="relative w-full">
           {PROJECTS.map((project, index) => (
-            <div key={project.title} ref={projectRefs.current[index]}> {/* Wrapper com Ref */}
+            <div
+              key={project.title}
+              ref={(el) => {
+                projectRefs.current[index] = el
+              }}
+            >
               <ProjectCard 
                 project={project} 
                 index={index} 

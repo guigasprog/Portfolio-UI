@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
+/*
+ * As fontes são servidas daqui, e não do Google Fonts.
+ *
+ * O CSS anterior pedia 'Fira Code' e nunca a baixava — sem @font-face, sem link
+ * para o Google: quem não tivesse a fonte instalada (quase todo mundo) via
+ * monospace genérico. A tipografia inteira do site era um acidente.
+ *
+ * São arquivos variáveis, um por família: uma requisição cobre a faixa de peso
+ * toda. 116 KB no total, do nosso domínio, sem terceiro no caminho crítico.
+ */
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/fonts/fira-code.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+ * O itálico é arquivo próprio de propósito. Os títulos do site usam `italic`
+ * com `font-black`, e sem um itálico de verdade o navegador inclina a fonte
+ * reta por conta própria — o resultado é sempre pior que o desenho real.
+ */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-italic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  --font-mono: 'Fira Code', ui-monospace, SFMono-Regular, monospace;
+  --font-display: 'Archivo', system-ui, sans-serif;
+}
+
 body {
   margin: 0;
   background-color: #0a0a0a;
   color: white;
-  font-family: 'Fira Code', monospace;
+  font-family: 'Fira Code', ui-monospace, monospace;
   overflow-x: hidden;
-  cursor: none;
+}
+
+/*
+ * Os títulos grandes não podem ser monoespaçados.
+ *
+ * Eles pedem `font-black` (900) e `italic`, e a Fira Code não tem nem um nem
+ * outro — ia tudo para a síntese do navegador. A Archivo tem os dois de
+ * verdade. O corpo continua monoespaçado, que é a cara do site.
+ */
+h1,
+h2,
+h3 {
+  font-family: 'Archivo', system-ui, sans-serif;
 }
 
 html {
-  /* SCROLL SUPER SUAVE */
-  scroll-behavior: smooth;
-}
-
-/* Suaviza ainda mais o scroll no container */
-main {
   scroll-behavior: smooth;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
+}
+
+/*
+ * O cursor nativo só some depois que o nosso entra em cena.
+ *
+ * Antes era `cursor: none` no body, direto no CSS: se o JavaScript falhasse ou
+ * demorasse, o visitante ficava sem cursor nenhum e sem saber por quê. A classe
+ * é posta pelo próprio CustomCursor ao montar, então o pior caso agora é o
+ * cursor normal do sistema.
+ */
+body.cursor-proprio {
+  cursor: none;
 }
 
 .cursor-inverted {
@@ -41,12 +103,19 @@ main {
   perspective: 1200px;
 }
 
+/* Em tela de toque não há ponteiro para substituir. */
 @media (hover: none) and (pointer: coarse) {
   .cursor-inverted {
-    display: none !important; /* Esconde o cursor no celular */
+    display: none !important;
   }
-  
-  body {
-    cursor: auto; /* Volta o cursor nativo (embora invisível no touch) */
+
+  body.cursor-proprio {
+    cursor: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }

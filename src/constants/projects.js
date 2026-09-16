@@ -1,14 +1,25 @@
+/**
+ * Os projetos do portfólio.
+ *
+ * `deploy: null` esconde o botão "ver ao vivo". Dois projetos estavam
+ * apontando para http://212.85.23.244:5173 e :5175 — a porta do servidor de
+ * DESENVOLVIMENTO do Vite, num IP cru, e ambos fora do ar: a conexão estoura o
+ * tempo limite. Eram os dois primeiros da página, então era a primeira coisa
+ * que um recrutador clicava e o que travava a aba dele.
+ *
+ * Ficam sem link até existir um endereço estável. Quando existir, é só pôr a
+ * URL de volta aqui.
+ */
 export const PROJECTS = [
   {
     title: "Nexus CRM & Mensageria",
-    // CORREÇÃO: Remova o ../../assets/ e use o caminho da pasta public
     image: "/images/crm.webp",
     imageWidth: 1296,
     imageHeight: 641,
     year: "2025",
     role: "Fullstack Architect",
     tags: ["Node.js", "Socket.io", "React"],
-    deploy: 'http://212.85.23.244:5173',
+    deploy: null,
     github: null,
     description: [
       "Um ecossistema robusto de gestão de relacionamento com o cliente (CRM) focado em centralização de canais. O sistema unifica atendimentos via WhatsApp, E-mail e SMS em um único dashboard em tempo real.",
@@ -17,14 +28,13 @@ export const PROJECTS = [
   },
   {
     title: "EmagreçaJá Mobile",
-    // CORREÇÃO: Caminho direto da public
     image: "/images/emagrecaja.webp",
     imageWidth: 1299,
     imageHeight: 643,
     year: "2026",
     role: "Mobile Lead",
     tags: ["React Native", "Firebase", "Data Visualization", "React", "Node.Js"],
-    deploy: 'http://212.85.23.244:5175',
+    deploy: null,
     github: null,
     description: [
       "Aplicação mobile focada na conexão entre personal trainers/nutricionistas e alunos. O app oferece ferramentas avançadas para análise de evolução corporal, gráficos de perda de peso ou ganho de massa e chat integrado.",
@@ -46,7 +56,6 @@ export const PROJECTS = [
   },
   {
     title: "QuestTerm RPG",
-    // CORREÇÃO: Caminho direto da public
     // PNG de propósito: esse print tem cores chapadas e ficou 46% MAIOR em WebP.
     image: "/images/questterm.png",
     imageWidth: 635,

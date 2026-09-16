@@ -13,16 +13,38 @@
     <meta name="author" content="Guilherme Delgado Martins" />
     <meta name="theme-color" content="#0a0a0a" />
 
-    <!-- Preview ao compartilhar o link (LinkedIn, WhatsApp, Twitter) -->
+    <!--
+      A fonte dos títulos aparece na primeira tela. Sem o preload o navegador só
+      descobre que precisa dela depois de baixar e interpretar o CSS, e o nome
+      pisca na fonte errada antes de assentar.
+    -->
+    <link rel="preload" href="/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/fira-code.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!--
+      Preview ao compartilhar o link (LinkedIn, WhatsApp, Twitter).
+
+      As URLs são ABSOLUTAS de propósito: og:image aceita só endereço completo.
+      Estava "/images/crm.webp", que nenhuma dessas redes consegue resolver — o
+      link vinha sendo compartilhado sem imagem nenhuma.
+    -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
+    <meta property="og:url" content="https://guilherme-delgado-martins.vercel.app/" />
     <meta property="og:title" content="Guilherme Delgado Martins — Tech Lead & Fullstack" />
     <meta
       property="og:description"
       content="Arquitetura de sistemas em tempo real, aplicações mobile e plataformas de venda. Veja os projetos."
     />
-    <meta property="og:image" content="/images/crm.webp" />
+    <meta
+      property="og:image"
+      content="https://guilherme-delgado-martins.vercel.app/images/crm.webp"
+    />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://guilherme-delgado-martins.vercel.app/images/crm.webp"
+    />
   </head>
   <body>
     <div id="root"></div>

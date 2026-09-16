@@ -15,15 +15,23 @@ export default function ScrollNavigation({ heroRef, aboutRef, projectRefs, foote
   // A ordem aqui é a ordem real das seções na página. Como a seção atual vem da
   // posição de cada elemento, inserir uma seção nova não exige recalcular
   // faixas de scroll na mão.
-  const getRefs = () => [heroRef, aboutRef, ...projectRefs.current, footerRef]
+  //
+  // Devolve ELEMENTOS, não objetos de ref: os cartões agora são preenchidos por
+  // callback ref, e misturar as duas formas na mesma lista obrigaria quem lê a
+  // adivinhar qual é qual.
+  const getElementos = () => [
+    heroRef.current,
+    aboutRef.current,
+    ...projectRefs.current,
+    footerRef.current,
+  ]
 
   useMotionValueEvent(scrollYProgress, 'change', () => {
     const centroViewport = window.innerHeight / 2
     let maisProximo = 0
     let menorDistancia = Infinity
 
-    getRefs().forEach((ref, i) => {
-      const el = ref?.current
+    getElementos().forEach((el, i) => {
       if (!el) return
       const rect = el.getBoundingClientRect()
       const distancia = Math.abs(rect.top + rect.height / 2 - centroViewport)
@@ -37,8 +45,7 @@ export default function ScrollNavigation({ heroRef, aboutRef, projectRefs, foote
   })
 
   const irPara = (i) => {
-    const el = getRefs()[i]?.current
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    getElementos()[i]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
   const anterior = LABELS[index - 1]

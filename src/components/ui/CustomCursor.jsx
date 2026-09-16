@@ -11,6 +11,14 @@ export default function CustomCursor() {
   const springX = useSpring(x, { stiffness: 700, damping: 45, mass: 0.35 })
   const springY = useSpring(y, { stiffness: 700, damping: 45, mass: 0.35 })
 
+  // Esconder o cursor nativo é responsabilidade DESTE componente, e não do CSS
+  // global: se o JavaScript falhar ou demorar, o visitante fica com o cursor do
+  // sistema em vez de ficar sem cursor nenhum e sem entender por quê.
+  useEffect(() => {
+    document.body.classList.add('cursor-proprio')
+    return () => document.body.classList.remove('cursor-proprio')
+  }, [])
+
   useEffect(() => {
     const handleMove = (e) => {
       x.set(e.clientX - SIZE / 2)
